@@ -1,0 +1,248 @@
+/* =============================================================
+   GitHub Finder — Design System
+   Paleta estritamente monocromática: #000000 -> #BDBDBD.
+   As cores são definidas UMA única vez como variáveis CSS
+   (fonte da verdade) e reaproveitadas pelo Tailwind (ver config
+   no index.html) e pelas classes de componente abaixo.
+   ============================================================= */
+
+/* ---------- 1. Design tokens ---------- */
+:root {
+  /* Paleta (escala de cinza) */
+  --color-ink:   #000000; /* fundo absoluto            */
+  --color-coal:  #0d0d0d; /* superfícies               */
+  --color-slate: #1a1a1a; /* cards internos            */
+  --color-stone: #2b2b2b; /* bordas / hover            */
+  --color-ash:   #4d4d4d; /* texto terciário / divisor */
+  --color-mute:  #8a8a8a; /* texto secundário          */
+  --color-fog:   #bdbdbd; /* texto principal / limite  */
+
+  /* Raios */
+  --radius-md:   0.5rem;  /*  8px */
+  --radius-lg:   0.75rem; /* 12px */
+  --radius-xl:   1rem;    /* 16px */
+  --radius-full: 9999px;
+
+  /* Movimento e tipografia */
+  --transition: 150ms ease;
+  --ring: 0 0 0 2px rgba(189, 189, 189, 0.55); /* anel de foco (#BDBDBD) */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* ---------- 2. Base ---------- */
+body {
+  background-color: var(--color-ink);
+  color: var(--color-fog);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background-color: var(--color-stone);
+  color: var(--color-fog);
+}
+
+/* ---------- 3. Marca / cabeçalho ---------- */
+.brand__badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 1px solid var(--color-stone);
+  background-color: var(--color-coal);
+  border-radius: var(--radius-full);
+  color: var(--color-fog);
+}
+
+.brand__title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--color-fog);
+}
+
+.brand__subtitle {
+  font-size: 0.875rem;
+  color: var(--color-mute);
+}
+
+/* ---------- 4. Formulário de busca ---------- */
+.field-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-mute);
+}
+
+.input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-stone);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-coal);
+  color: var(--color-fog);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.input::placeholder { color: var(--color-ash); }
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-mute);
+  box-shadow: var(--ring);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition), opacity var(--transition);
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+.btn--primary {
+  background-color: var(--color-fog);
+  color: var(--color-ink);
+}
+
+.btn--primary:hover { background-color: var(--color-mute); }
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- 5. Mensagens (validação / erro / loading) ---------- */
+.alert {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-stone);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-coal);
+  color: var(--color-mute);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+/* ---------- 6. Card de perfil ---------- */
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  border: 1px solid var(--color-stone);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-coal);
+  text-align: center;
+}
+
+.profile__avatar {
+  width: 6rem;
+  height: 6rem;
+  flex-shrink: 0;
+  border: 1px solid var(--color-stone);
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+.profile__name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-fog);
+}
+
+.profile__login {
+  font-size: 0.875rem;
+  color: var(--color-mute);
+  text-decoration: none;
+}
+
+.profile__login:hover { color: var(--color-fog); }
+
+.profile__bio {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--color-mute);
+}
+
+/* ---------- 7. Lista de repositórios ---------- */
+.repos__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-ash);
+}
+
+.repos__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.repos__empty {
+  font-size: 0.875rem;
+  color: var(--color-mute);
+}
+
+.repo-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid var(--color-stone);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-slate);
+  text-decoration: none;
+  transition: border-color var(--transition);
+}
+
+.repo-card:hover { border-color: var(--color-mute); }
+
+.repo-card__name {
+  font-weight: 600;
+  color: var(--color-fog);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.repo-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--color-mute);
+}
+
+/* ---------- 8. Utilitários de estado ---------- */
+.is-hidden { display: none !important; }
+
+/* ---------- 9. Responsivo (mobile-first -> >= 640px) ---------- */
+@media (min-width: 640px) {
+  .profile {
+    flex-direction: row;
+    text-align: left;
+  }
+
+  .repos__grid { grid-template-columns: 1fr 1fr; }
+
+  .repos__empty { grid-column: 1 / -1; }
+}
+
+/* ---------- 10. Acessibilidade: movimento reduzido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
