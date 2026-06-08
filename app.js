@@ -1,13 +1,8 @@
-// GitHub Finder — busca o perfil e os repositórios de um usuário do GitHub.
-// Estrutura: Config -> Referências de DOM -> Helpers -> API -> Render ->
-// Controlador -> Inicialização. Encapsulado em IIFE para não poluir o escopo global.
-
 (() => {
   "use strict";
 
-  /* ---------- Config ---------- */
   const API_BASE = "https://api.github.com/users";
-  const TOTAL_REPOS = 6; // últimos repositórios exibidos
+  const TOTAL_REPOS = 6;
   const MENSAGENS = {
     vazio: "Digite um nome de usuário para buscar.",
     buscando: "Buscando...",
@@ -17,7 +12,6 @@
     semRepos: "Este usuário não possui repositórios públicos.",
   };
 
-  /* ---------- Referências de DOM ---------- */
   const form = document.getElementById("form-busca");
   const campo = document.getElementById("campo-usuario");
   const botao = document.getElementById("botao-buscar");
@@ -29,7 +23,6 @@
   const bio = document.getElementById("bio");
   const listaRepos = document.getElementById("lista-repos");
 
-  /* ---------- Helpers ---------- */
   const exibir = (el) => el.classList.remove("is-hidden");
   const ocultar = (el) => el.classList.add("is-hidden");
 
@@ -38,7 +31,6 @@
     exibir(aviso);
   }
 
-  // Reseta a tela para o estado inicial antes de cada nova busca.
   function limparTela() {
     aviso.textContent = "";
     ocultar(aviso);
@@ -46,14 +38,12 @@
     listaRepos.innerHTML = "";
   }
 
-  /* ---------- API ---------- */
   const buscarPerfil = (usuario) =>
     fetch(`${API_BASE}/${encodeURIComponent(usuario)}`);
 
   const buscarRepos = (usuario) =>
     fetch(`${API_BASE}/${encodeURIComponent(usuario)}/repos?per_page=100`);
 
-  /* ---------- Render ---------- */
   function renderizarPerfil(usuario) {
     avatar.src = usuario.avatar_url;
     avatar.alt = `Foto de perfil de ${usuario.name || usuario.login}`;
@@ -72,8 +62,6 @@
     exibir(resultado);
   }
 
-  // Cria o card de um repositório via DOM API (textContent evita injeção
-  // de HTML a partir de nomes de repositório controlados pelo usuário).
   function criarCardRepo(repo) {
     const card = document.createElement("a");
     card.className = "repo-card";
@@ -99,7 +87,6 @@
     return card;
   }
 
-  // Percorre o array de repositórios (forEach) e gera os cards.
   function renderizarRepositorios(repos) {
     listaRepos.innerHTML = "";
 
@@ -112,13 +99,12 @@
     }
 
     repos
-      .slice() // cópia para não mutar o array original
+      .slice()
       .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
       .slice(0, TOTAL_REPOS)
       .forEach((repo) => listaRepos.appendChild(criarCardRepo(repo)));
   }
 
-  /* ---------- Controlador ---------- */
   async function buscar(usuario) {
     botao.disabled = true;
     mostrarAviso(MENSAGENS.buscando);
@@ -140,7 +126,6 @@
 
       const perfil = await respostaPerfil.json();
 
-      // Segunda requisição: repositórios do usuário.
       const respostaRepos = await buscarRepos(usuario);
       const repos = respostaRepos.ok ? await respostaRepos.json() : [];
 
@@ -155,13 +140,11 @@
     }
   }
 
-  /* ---------- Inicialização ---------- */
   form.addEventListener("submit", (evento) => {
-    evento.preventDefault(); // evita o reload padrão do formulário
+    evento.preventDefault();
 
     const valor = campo.value.trim();
 
-    // Validação: campo vazio interrompe a busca imediatamente.
     if (!valor) {
       limparTela();
       mostrarAviso(MENSAGENS.vazio);
